@@ -16,7 +16,7 @@ export default function Home() {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const fetchEpisode = async () => {
-    if (loading) return; 
+    console.log("page",page);
     setLoading(true);
 
     try {
@@ -50,27 +50,28 @@ export default function Home() {
   const lastEpisodeRef = useCallback(
     (node: HTMLDivElement) => {
       const totalPages = Number(responseData.info?.pages || 1); 
-      // console.log("total pages",page,totalPages)
 
-      if (!node || loading || page >= totalPages) return;
+      if (!node || loading ) return;
 
-      if (observer.current) observer.current.disconnect();
+      if (observer.current) {
+        observer.current.disconnect();
+      }
 
       observer.current = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && !loading) {
-          // console.log("last elementt")
-          setPage(prevPage => (prevPage < totalPages ? prevPage + 1 : prevPage));
+        if (entries[0].isIntersecting && page < totalPages) {
+          console.log('call',page)
+          setPage(prevPage => prevPage + 1 );
         }
       });
 
       observer.current.observe(node);
-      console.log("node",node)
+ 
     },
     [responseData.info, page, loading]
   );
 
   useEffect(() => {
-    // console.log("page",page);
+   
     fetchEpisode();
   }, [page]); 
 
