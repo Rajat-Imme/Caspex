@@ -16,7 +16,6 @@ export default function Home() {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const fetchEpisode = async () => {
-    console.log("page",page);
     setLoading(true);
 
     try {
@@ -59,7 +58,7 @@ export default function Home() {
 
       observer.current = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting && page < totalPages) {
-          console.log('call',page)
+         
           setPage(prevPage => prevPage + 1 );
         }
       });
@@ -70,8 +69,7 @@ export default function Home() {
     [responseData.info, page, loading]
   );
 
-  useEffect(() => {
-   
+  useEffect(() => { 
     fetchEpisode();
   }, [page]); 
 
@@ -86,6 +84,7 @@ export default function Home() {
             onClick={() => fetchCharacters(episode.characters as string[], Number(episode.id))}
             ref={index === responseData.results.length - 1 ? lastEpisodeRef : null}
             isSelected={selectedEpisodeId === Number(episode.id)}
+            isLast={index === responseData.results.length - 1}
           />
         ))}
 

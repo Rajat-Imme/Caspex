@@ -6,17 +6,20 @@ import { EpisodeType } from "@/lib/definitions";
 interface EpisodeProps {
   episode: EpisodeType;
   onClick: () => void;
-  isSelected: boolean; // Highlight when true
+  isSelected: boolean; 
+  isLast:boolean;
 }
 
-// Use forwardRef to pass a ref down to the div element
-const Episode = forwardRef<HTMLDivElement, EpisodeProps>(({ episode, onClick, isSelected }, ref) => {
+
+const Episode = forwardRef<HTMLDivElement, EpisodeProps>(({ episode, onClick, isSelected,isLast }, ref) => {
+  console.log(episode.name,isLast)
   return (
     <div 
       ref={ref}
-      className={`border p-4 rounded-lg shadow-md cursor-pointer transition-all hover:bg-gray-100 hover:shadow-lg ${
-        isSelected ? "bg-blue-200 border-blue-500" : "bg-white"
-      }`}
+      className={`border p-4 rounded-lg shadow-md cursor-pointer transition-all hover:bg-gray-100 hover:shadow-lg 
+        ${isSelected ? "bg-blue-200 border-blue-500" : "bg-white"} 
+        ${isLast ? "border-amber-700" : ""}`
+      }
       onClick={onClick}
     >
       <h2 className="text-lg font-semibold">{episode.name}</h2>
@@ -26,7 +29,7 @@ const Episode = forwardRef<HTMLDivElement, EpisodeProps>(({ episode, onClick, is
   );
 });
 
-// Set display name for debugging
+
 Episode.displayName = "Episode";
 
 export default Episode;
